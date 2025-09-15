@@ -1,34 +1,24 @@
 class Solution {
-    List<Integer> solve(String exp) {
+    public List<Integer> diffWaysToCompute(String expression) {
         List<Integer> res = new ArrayList<>();
-
-        for(int i=0; i<exp.length(); i++) {
-            char ch = exp.charAt(i);
-            if(ch == '+' || ch == '-' || ch == '*') {
-                List<Integer> left = solve(exp.substring(0, i));
-                List<Integer> right = solve(exp.substring(i+1));
-
+        
+        for(int i=0; i<expression.length(); i++) {
+            char op = expression.charAt(i);
+            if(op == '+' || op == '-' || op == '*') {
+                List<Integer> left = diffWaysToCompute(expression.substring(0, i));
+                List<Integer> right = diffWaysToCompute(expression.substring(i+1));
+                
                 for(int l : left) {
                     for(int r : right) {
-                        if(ch == '+') {
-                            res.add(l + r);
-                        } else if(ch == '-') {
-                            res.add(l - r);
-                        } else if(ch == '*') {
-                            res.add(l * r);
-                        }
+                        if(op == '+') res.add(l+r);
+                        else if(op == '-') res.add(l-r);
+                        else if(op == '*') res.add(l*r);
                     }
                 }
             }
         }
-        if(res.isEmpty()) {
-            res.add(Integer.parseInt(exp));
-        }
 
+        if(res.isEmpty()) res.add(Integer.parseInt(expression));
         return res;
-    }
-
-    public List<Integer> diffWaysToCompute(String expression) {
-        return solve(expression);
     }
 }
